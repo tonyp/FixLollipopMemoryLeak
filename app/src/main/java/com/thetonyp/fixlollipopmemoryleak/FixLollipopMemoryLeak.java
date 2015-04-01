@@ -26,7 +26,7 @@ public class FixLollipopMemoryLeak implements IXposedHookLoadPackage {
 
     @Override
     public void handleLoadPackage(LoadPackageParam lpparam) throws Throwable {
-        if (!lpparam.packageName.equals("android") || !lpparam.processName.equals("android"))
+        if (!"android".equals(lpparam.packageName) || !"android".equals(lpparam.processName))
             return;
 
         if (Build.VERSION.SDK_INT != Build.VERSION_CODES.LOLLIPOP) {
