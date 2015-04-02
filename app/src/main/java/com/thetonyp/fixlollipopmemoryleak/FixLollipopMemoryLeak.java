@@ -81,14 +81,15 @@ public class FixLollipopMemoryLeak implements IXposedHookLoadPackage {
                             // Set up texture coordinates for a quad.
                             // We might need to change this if the texture ends up being
                             // a different size from the display for some reason.
-                            ((FloatBuffer) XposedHelpers.getObjectField(param.thisObject, "mTexCoordBuffer")).put(0, 0f);
-                            ((FloatBuffer) XposedHelpers.getObjectField(param.thisObject, "mTexCoordBuffer")).put(1, 0f);
-                            ((FloatBuffer) XposedHelpers.getObjectField(param.thisObject, "mTexCoordBuffer")).put(2, 0f);
-                            ((FloatBuffer) XposedHelpers.getObjectField(param.thisObject, "mTexCoordBuffer")).put(3, 1f);
-                            ((FloatBuffer) XposedHelpers.getObjectField(param.thisObject, "mTexCoordBuffer")).put(4, 1f);
-                            ((FloatBuffer) XposedHelpers.getObjectField(param.thisObject, "mTexCoordBuffer")).put(5, 1f);
-                            ((FloatBuffer) XposedHelpers.getObjectField(param.thisObject, "mTexCoordBuffer")).put(6, 1f);
-                            ((FloatBuffer) XposedHelpers.getObjectField(param.thisObject, "mTexCoordBuffer")).put(7, 0f);
+                            FloatBuffer texCoordBuffer = (FloatBuffer) XposedHelpers.getObjectField(param.thisObject, "mTexCoordBuffer");
+                            texCoordBuffer.put(0, 0f);
+                            texCoordBuffer.put(1, 0f);
+                            texCoordBuffer.put(2, 0f);
+                            texCoordBuffer.put(3, 1f);
+                            texCoordBuffer.put(4, 1f);
+                            texCoordBuffer.put(5, 1f);
+                            texCoordBuffer.put(6, 1f);
+                            texCoordBuffer.put(7, 0f);
 
                             // Set up our viewport.
                             int mDisplayWidth = XposedHelpers.getIntField(param.thisObject, "mDisplayWidth");
