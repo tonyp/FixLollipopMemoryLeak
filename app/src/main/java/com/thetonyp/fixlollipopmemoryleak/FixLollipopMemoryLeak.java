@@ -41,7 +41,7 @@ public class FixLollipopMemoryLeak implements IXposedHookLoadPackage {
                     @Override
                     protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
 
-                        boolean attachEglContext = (Boolean) XposedHelpers.callMethod(param.thisObject, "attachEglContext");
+                        boolean attachEglContext = (boolean) XposedHelpers.callMethod(param.thisObject, "attachEglContext");
                         if (!attachEglContext) {
                             if (DEBUG) log("EGL Context not attached");
                             return false;
@@ -53,7 +53,7 @@ public class FixLollipopMemoryLeak implements IXposedHookLoadPackage {
                         try {
                             if (!mTexNamesGenerated) {
                                 GLES20.glGenTextures(1, mTexNames, 0);
-                                boolean checkGlErrors = (Boolean) XposedHelpers.callMethod(param.thisObject, "checkGlErrors", "glGenTextures");
+                                boolean checkGlErrors = (boolean) XposedHelpers.callMethod(param.thisObject, "checkGlErrors", "glGenTextures");
                                 if (checkGlErrors) {
                                     if (DEBUG) log("OpenGL error occured");
                                     return false;
