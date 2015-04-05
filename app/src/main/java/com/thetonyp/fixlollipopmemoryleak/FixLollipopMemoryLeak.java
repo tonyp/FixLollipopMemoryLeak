@@ -41,7 +41,7 @@ public class FixLollipopMemoryLeak implements IXposedHookLoadPackage {
                     @Override
                     protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
 
-                        boolean attachEglContext = (Boolean) XposedHelpers.callMethod(param.thisObject, "attachEglContext");
+                        boolean attachEglContext = (boolean) XposedHelpers.callMethod(param.thisObject, "attachEglContext");
                         if (!attachEglContext) {
                             if (DEBUG) log("EGL Context not attached");
                             return false;
@@ -53,7 +53,7 @@ public class FixLollipopMemoryLeak implements IXposedHookLoadPackage {
                         try {
                             if (!mTexNamesGenerated) {
                                 GLES20.glGenTextures(1, mTexNames, 0);
-                                boolean checkGlErrors = (Boolean) XposedHelpers.callMethod(param.thisObject, "checkGlErrors", "glGenTextures");
+                                boolean checkGlErrors = (boolean) XposedHelpers.callMethod(param.thisObject, "checkGlErrors", "glGenTextures");
                                 if (checkGlErrors) {
                                     if (DEBUG) log("OpenGL error occured");
                                     return false;
@@ -81,14 +81,15 @@ public class FixLollipopMemoryLeak implements IXposedHookLoadPackage {
                             // Set up texture coordinates for a quad.
                             // We might need to change this if the texture ends up being
                             // a different size from the display for some reason.
-                            ((FloatBuffer) XposedHelpers.getObjectField(param.thisObject, "mTexCoordBuffer")).put(0, 0f);
-                            ((FloatBuffer) XposedHelpers.getObjectField(param.thisObject, "mTexCoordBuffer")).put(1, 0f);
-                            ((FloatBuffer) XposedHelpers.getObjectField(param.thisObject, "mTexCoordBuffer")).put(2, 0f);
-                            ((FloatBuffer) XposedHelpers.getObjectField(param.thisObject, "mTexCoordBuffer")).put(3, 1f);
-                            ((FloatBuffer) XposedHelpers.getObjectField(param.thisObject, "mTexCoordBuffer")).put(4, 1f);
-                            ((FloatBuffer) XposedHelpers.getObjectField(param.thisObject, "mTexCoordBuffer")).put(5, 1f);
-                            ((FloatBuffer) XposedHelpers.getObjectField(param.thisObject, "mTexCoordBuffer")).put(6, 1f);
-                            ((FloatBuffer) XposedHelpers.getObjectField(param.thisObject, "mTexCoordBuffer")).put(7, 0f);
+                            FloatBuffer texCoordBuffer = (FloatBuffer) XposedHelpers.getObjectField(param.thisObject, "mTexCoordBuffer");
+                            texCoordBuffer.put(0, 0f);
+                            texCoordBuffer.put(1, 0f);
+                            texCoordBuffer.put(2, 0f);
+                            texCoordBuffer.put(3, 1f);
+                            texCoordBuffer.put(4, 1f);
+                            texCoordBuffer.put(5, 1f);
+                            texCoordBuffer.put(6, 1f);
+                            texCoordBuffer.put(7, 0f);
 
                             // Set up our viewport.
                             int mDisplayWidth = XposedHelpers.getIntField(param.thisObject, "mDisplayWidth");
