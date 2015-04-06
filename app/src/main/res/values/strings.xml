@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">Fix Lollipop Memory Leak</string>
+    <string name="xposed_description">Fixes the ColorFade Memory Leak in Android 5.0.x</string>
+
+    <string name="pref_about">About</string>
+    <string name="pref_about_title">Fix Lollipop Memory Leak v%1$s</string>
+    <string name="pref_about_summary">Copyright © 2015 - tonyp \nG+: http://google.com/+thetonyp \nTap to visit XDA thread</string>
+    <string name="pref_about_gplus_title">Follow me on G+</string>
+    <string name="pref_about_gplus_summary">Click to follow +thetonyp on Google Plus</string>
+
+    <string name="pref_options">Options</string>
+
+    <string name="pref_launcher_title">Show launcher icon</string>
+    <string name="pref_launcher_on">App Drawer launcher icon visible</string>
+    <string name="pref_launcher_off">App Drawer launcher icon hidden</string>
+
+    <string name="pref_debug_title">Enable debug log</string>
+    <string name="pref_debug_on">Xposed Debug Logs enabled</string>
+    <string name="pref_debug_off">Xposed Debug Logs disabled</string>
+
 </resources>

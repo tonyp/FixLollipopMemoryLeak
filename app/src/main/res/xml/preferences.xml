@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <Preference
+        android:key="pref_about"
+        android:summary="@string/pref_about_summary"
+        android:title="@string/app_name">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="http://forum.xda-developers.com/xposed/modules/xposed-fix-lollipop-memory-leak-t3065296" />
+    </Preference>
+
+    <Preference
+        android:key="pref_gplus"
+        android:summary="@string/pref_about_gplus_summary"
+        android:title="@string/pref_about_gplus_title">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="http://plus.google.com/+thetonyp" />
+    </Preference>
+
+    <PreferenceCategory android:title="@string/pref_options">
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="pref_debug"
+            android:summaryOff="@string/pref_debug_off"
+            android:summaryOn="@string/pref_debug_on"
+            android:title="@string/pref_debug_title" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="pref_launcher"
+            android:summaryOff="@string/pref_launcher_off"
+            android:summaryOn="@string/pref_launcher_on"
+            android:title="@string/pref_launcher_title" />
+    </PreferenceCategory>
+</PreferenceScreen>

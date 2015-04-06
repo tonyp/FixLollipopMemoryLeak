@@ -10,6 +10,7 @@ import java.nio.FloatBuffer;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodReplacement;
+import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
@@ -17,9 +18,12 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 public class FixLollipopMemoryLeak implements IXposedHookLoadPackage {
     private static final String TAG = "FixLollipopLeak";
     private static final boolean DEBUG = false;
+    private static boolean userDebugging = false;
 
-    private static void log(String entry) {
-        XposedBridge.log(TAG + ": " + entry);
+    private XSharedPreferences prefs;
+
+    private static void debugLog(String entry) {
+        if (DEBUG || userDebugging) XposedBridge.log(TAG + ": " + entry);
     }
 
     private static final String CLASS_DISPLAY_COLOR_FADE = "com.android.server.display.ColorFade";
@@ -30,9 +34,13 @@ public class FixLollipopMemoryLeak implements IXposedHookLoadPackage {
             return;
 
         if (Build.VERSION.SDK_INT != Build.VERSION_CODES.LOLLIPOP) {
-            log("module disabled. This will only work with Android 5.0.x!");
+            XposedBridge.log(TAG + ": DISABLED. This module only works with Android 5.0.x, not with " + Build.VERSION.RELEASE);
             return;
         }
+
+        final XSharedPreferences prefs = new XSharedPreferences(BuildConfig.APPLICATION_ID);
+        userDebugging = prefs.getBoolean("pref_debug", false);
+        debugLog("v" + BuildConfig.VERSION_NAME + ", Android " + Build.VERSION.RELEASE + " (SDK " + Build.VERSION.SDK_INT + ")");
 
         final Class<?> classColorFade = XposedHelpers.findClass(CLASS_DISPLAY_COLOR_FADE, lpparam.classLoader);
 
@@ -43,7 +51,7 @@ public class FixLollipopMemoryLeak implements IXposedHookLoadPackage {
 
                         boolean attachEglContext = (boolean) XposedHelpers.callMethod(param.thisObject, "attachEglContext");
                         if (!attachEglContext) {
-                            if (DEBUG) log("EGL Context not attached");
+                            debugLog("EGL Context not attached");
                             return false;
                         }
 
@@ -55,7 +63,7 @@ public class FixLollipopMemoryLeak implements IXposedHookLoadPackage {
                                 GLES20.glGenTextures(1, mTexNames, 0);
                                 boolean checkGlErrors = (boolean) XposedHelpers.callMethod(param.thisObject, "checkGlErrors", "glGenTextures");
                                 if (checkGlErrors) {
-                                    if (DEBUG) log("OpenGL error occured");
+                                    debugLog("OpenGL error occured");
                                     return false;
                                 }
                                 XposedHelpers.setBooleanField(param.thisObject, "mTexNamesGenerated", true);
@@ -75,7 +83,7 @@ public class FixLollipopMemoryLeak implements IXposedHookLoadPackage {
                             } finally {
                                 s.release();
                                 st.release();
-                                if (DEBUG) log("Surface and SurfaceTexture released");
+                                debugLog("Surface and SurfaceTexture released");
                             }
 
                             // Set up texture coordinates for a quad.
@@ -98,12 +106,11 @@ public class FixLollipopMemoryLeak implements IXposedHookLoadPackage {
                             XposedHelpers.callMethod(param.thisObject, "ortho", 0, mDisplayWidth, 0, mDisplayHeight, -1, 1);
                         } finally {
                             XposedHelpers.callMethod(param.thisObject, "detachEglContext");
-                            if (DEBUG) log("EGL Context detached");
+                            debugLog("EGL Context detached");
                         }
-                        if (DEBUG) log("exiting method");
+                        debugLog("exiting hook");
                         return true;
                     }
                 });
     }
-
 }
