@@ -20,8 +20,6 @@ public class FixLollipopMemoryLeak implements IXposedHookLoadPackage {
     private static final boolean DEBUG = false;
     private static boolean userDebugging = false;
 
-    private XSharedPreferences prefs;
-
     private static void debugLog(String entry) {
         if (DEBUG || userDebugging) XposedBridge.log(TAG + ": " + entry);
     }
@@ -48,6 +46,8 @@ public class FixLollipopMemoryLeak implements IXposedHookLoadPackage {
                 new XC_MethodReplacement() {
                     @Override
                     protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
+                        prefs.reload();
+                        userDebugging = prefs.getBoolean("pref_debug", false);
 
                         boolean attachEglContext = (boolean) XposedHelpers.callMethod(param.thisObject, "attachEglContext");
                         if (!attachEglContext) {
