@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Lollipop 메모리 누수 수정</string>
+    <string name="xposed_description">Android 5.0.x 버전에서 ColorFade로 인한 메모리 누수 문제를 해결해줍니다.</string>
+
+    <string name="pref_about">어플리케이션 소개</string>
+    <string name="pref_about_title">Lollipop 메모리 누수 수정 모듈 v%1$s</string>
+    <string name="pref_about_summary">Copyright © 2015 - tonyp \nG+: http://google.com/+thetonyp \nXDA 포럼 스레드를 보시려면 여기를 눌러주세요.</string>
+    <string name="pref_about_gplus_title">G+ 팔로우</string>
+    <string name="pref_about_gplus_summary">Google Plus에서 +thetonyp를 팔로우하려면 눌러주세요.</string>
+
+    <string name="pref_options">설정</string>
+
+    <string name="pref_launcher_title">앱 런처 아이콘 보이기</string>
+    <string name="pref_launcher_on">홈 런처에서 이 앱의 아이콘을 보입니다.</string>
+    <string name="pref_launcher_off">홈 런처에서 이 앱의 아이콘을 보이지 않습니다.</string>
+
+    <string name="pref_debug_title">디버그 로그 활성화</string>
+    <string name="pref_debug_on">Xposed 디버그 로그를 활성화합니다.</string>
+    <string name="pref_debug_off">Xposed 디버그 로그를 비활성화합니다.</string>
+
+</resources>
